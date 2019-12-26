@@ -44,11 +44,26 @@ class LSTMTuckER(nn.Module):
 
         return self.tucker.evaluate(e_encoded, r_encoded, self.cal_es_emb())
 
+    def evaluate_top(self, e1, r, e2):
+        e1 = self.Eembed(e1)
+        e1_encoded, tmp = self.elstm(e1)
+        e1_encoded = torch.mean(e1_encoded, dim=1)
+
+        r = self.Rembed(r)
+        r_encoded, tmp = self.rlstm(r)
+        r_encoded = torch.mean(r_encoded, dim=1)
+
+        e2= self.Eembed(e2)
+        e2_encoded, tmp = self.elstm(e2)
+        e2_encoded = torch.mean(e2_encoded, dim=1)
+
+        return self.tucker.evaluate_top(e1_encoded, r_encoded, e2_encoded)
+
     def forward(self, e, r, e2p, e2n):
 
         e = self.Eembed(e)
         e_encoded, tmp = self.elstm(e)
-        e_encoded = e_encoded[:, -1,:]  # use last word's output
+        e_encoded = torch.mean(e_encoded, dim=1)
 
         e2p = self.Eembed(e2p)
         e2p_encoded, tmp = self.elstm(e2p)
@@ -61,7 +76,7 @@ class LSTMTuckER(nn.Module):
 
         r = self.Rembed(r)
         r_encoded, tmp = self.rlstm(r)
-        r_encoded = r_encoded[:,-1,:]#use last word's output
+        r_encoded = torch.mean(r_encoded, dim=1)
 
 
         return self.tucker(e_encoded, r_encoded, e2p_encoded, e2n_encoded)

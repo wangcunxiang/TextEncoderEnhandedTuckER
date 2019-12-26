@@ -1,0 +1,160 @@
+PersonX plays a ___ in the war	oReact	none
+PersonX plays a ___ in the war	xIntent	to participate
+PersonX plays a ___ in the war	xReact	tired
+PersonX plays a ___ in the war	oReact	sad
+PersonX plays a ___ in the war	xIntent	to help out
+PersonX plays a ___ in the war	xReact	tired
+PersonX plays a ___ in the war	oEffect	none
+PersonX plays a ___ in the war	xEffect	gets hurt
+PersonX plays a ___ in the war	xEffect	has surgery
+PersonX plays a ___ in the war	oEffect	none
+PersonX plays a ___ in the war	xEffect	PersonX is injured from war
+PersonX plays a ___ in the war	xEffect	PersonX is considered a hero
+PersonX plays a ___ in the war	oEffect	Helped
+PersonX plays a ___ in the war	oEffect	Won
+PersonX plays a ___ in the war	xEffect	He's honorable
+PersonX plays a ___ in the war	xEffect	Selfless
+PersonX plays a ___ in the war	oWant	none
+PersonX plays a ___ in the war	xNeed	to fight
+PersonX plays a ___ in the war	xNeed	to be in battle
+PersonX plays a ___ in the war	xWant	to win
+PersonX plays a ___ in the war	xWant	to shoot
+PersonX plays a ___ in the war	oWant	throw a parade
+PersonX plays a ___ in the war	oWant	give orders
+PersonX plays a ___ in the war	xNeed	enlist in army
+PersonX plays a ___ in the war	xNeed	go through training
+PersonX plays a ___ in the war	xWant	return home
+PersonX plays a ___ in the war	xWant	collect benefits
+PersonX plays a ___ in the war	oWant	to end the war
+PersonX plays a ___ in the war	oWant	to live peacefully
+PersonX plays a ___ in the war	xNeed	for  their to be a war
+PersonX plays a ___ in the war	xNeed	for of them to play a part in it
+PersonX plays a ___ in the war	xWant	to do their best
+PersonX plays a ___ in the war	xWant	for the war to be over
+PersonX plays a ___ in the war	xAttr	Combative
+PersonX plays a ___ in the war	xAttr	Angry
+PersonX plays a ___ in the war	xAttr	hardened
+PersonX plays a ___ in the war	xAttr	tough
+PersonX plays a ___ in the war	xAttr	authoritative
+PersonX plays a ___ in the war	xAttr	commanding
+PersonX plays a ___ in the economy	oReact	none
+PersonX plays a ___ in the economy	xIntent	to be a productive citizen
+PersonX plays a ___ in the economy	xReact	accomplished
+PersonX plays a ___ in the economy	xReact	like belonging to a bigger picture
+PersonX plays a ___ in the economy	oReact	none
+PersonX plays a ___ in the economy	xIntent	to help
+PersonX plays a ___ in the economy	xReact	good
+PersonX plays a ___ in the economy	oEffect	none
+PersonX plays a ___ in the economy	xEffect	Loses job
+PersonX plays a ___ in the economy	xEffect	Makes money
+PersonX plays a ___ in the economy	oEffect	none
+PersonX plays a ___ in the economy	xEffect	gets a job
+PersonX plays a ___ in the economy	xEffect	learns about stocks and bonds
+PersonX plays a ___ in the economy	oEffect	none
+PersonX plays a ___ in the economy	xEffect	buys
+PersonX plays a ___ in the economy	xEffect	sells
+PersonX plays a ___ in the economy	oWant	to give thanks
+PersonX plays a ___ in the economy	oWant	to rebel against PersonX
+PersonX plays a ___ in the economy	xNeed	to gather information
+PersonX plays a ___ in the economy	xNeed	to get in a position of power
+PersonX plays a ___ in the economy	xWant	to carry out duties
+PersonX plays a ___ in the economy	xWant	to continue boosting the economy
+PersonX plays a ___ in the economy	oWant	none
+PersonX plays a ___ in the economy	xNeed	to get an economics education.
+PersonX plays a ___ in the economy	xNeed	to get an influencial job.
+PersonX plays a ___ in the economy	xWant	appear on cable news shows for money.
+PersonX plays a ___ in the economy	xWant	to take a high paying job as a consultant.
+PersonX plays a ___ in the economy	oWant	to sell him things
+PersonX plays a ___ in the economy	oWant	to buy things they need
+PersonX plays a ___ in the economy	xNeed	to of gotten a job
+PersonX plays a ___ in the economy	xNeed	to spend some of his money
+PersonX plays a ___ in the economy	xWant	to earn more finances
+PersonX plays a ___ in the economy	xWant	to save some of it
+PersonX plays a ___ in the economy	xAttr	powerful
+PersonX plays a ___ in the economy	xAttr	dominant
+PersonX plays a ___ in the economy	xAttr	responsible
+PersonX plays a ___ in the economy	xAttr	participating
+PersonX plays a ___ in the economy	xAttr	secure
+PersonX plays a ___ in the economy	xAttr	talented
+PersonX focuses ___ on issues	oReact	none
+PersonX focuses ___ on issues	xIntent	to show appreciation
+PersonX focuses ___ on issues	xReact	satisfied
+PersonX focuses ___ on issues	oEffect	none
+PersonX focuses ___ on issues	xEffect	Wins the debate
+PersonX focuses ___ on issues	xEffect	Loses the debate
+PersonX focuses ___ on issues	oWant	none
+PersonX focuses ___ on issues	xNeed	none
+PersonX focuses ___ on issues	xWant	to solve the issue
+PersonX focuses ___ on issues	xWant	to help others
+PersonX focuses ___ on issues	oWant	to support PersonX
+PersonX focuses ___ on issues	oWant	to oppose PersonX
+PersonX focuses ___ on issues	xNeed	to gather information
+PersonX focuses ___ on issues	xNeed	to make a decision
+PersonX focuses ___ on issues	xWant	to carry out decisions
+PersonX focuses ___ on issues	xWant	to gather support
+PersonX focuses ___ on issues	xAttr	thoughtful
+PersonX focuses ___ on issues	xAttr	analytical
+PersonX focuses ___ on issues	xAttr	observant
+PersonX focuses ___ on issues	xAttr	watchful
+PersonX focuses ___ on issues	xAttr	attentive
+PersonX focuses ___ on issues	xAttr	motivated
+PersonX focuses ___ on issues	xAttr	disciplined
+PersonX hardens pharaoh 's ___	oReact	scared
+PersonX hardens pharaoh 's ___	oReact	upset
+PersonX hardens pharaoh 's ___	oReact	confused
+PersonX hardens pharaoh 's ___	xIntent	events to play out a certain way
+PersonX hardens pharaoh 's ___	xReact	wise
+PersonX hardens pharaoh 's ___	xReact	powerful
+PersonX hardens pharaoh 's ___	oEffect	The pharaoh screams in extraordinary pain
+PersonX hardens pharaoh 's ___	oEffect	The pharaoh dies
+PersonX hardens pharaoh 's ___	xEffect	none
+PersonX hardens pharaoh 's ___	oEffect	none
+PersonX hardens pharaoh 's ___	xEffect	gets beaten up
+PersonX hardens pharaoh 's ___	xEffect	gets executed
+PersonX hardens pharaoh 's ___	oWant	execute PersonX
+PersonX hardens pharaoh 's ___	oWant	imprison PersonX
+PersonX hardens pharaoh 's ___	xNeed	meet the leader
+PersonX hardens pharaoh 's ___	xNeed	pledge loyalty
+PersonX hardens pharaoh 's ___	xWant	flee the kingdom
+PersonX hardens pharaoh 's ___	xWant	beg for mercy
+PersonX hardens pharaoh 's ___	oWant	PersonX to let them be
+PersonX hardens pharaoh 's ___	oWant	to destroy the lands of others
+PersonX hardens pharaoh 's ___	xNeed	to have power over Pharaoh
+PersonX hardens pharaoh 's ___	xNeed	to tell Pharaoh lies
+PersonX hardens pharaoh 's ___	xWant	to make Pharaoh punish people
+PersonX hardens pharaoh 's ___	xWant	to send Pharaoh to hell
+PersonX hardens pharaoh 's ___	oWant	To not let the people go
+PersonX hardens pharaoh 's ___	oWant	To stop person X
+PersonX hardens pharaoh 's ___	xNeed	none
+PersonX hardens pharaoh 's ___	xWant	To defeat the Pharoah
+PersonX hardens pharaoh 's ___	xWant	To free his people
+PersonX hardens pharaoh 's ___	xAttr	scientific
+PersonX hardens pharaoh 's ___	xAttr	creative
+PersonX hardens pharaoh 's ___	xAttr	powerful
+PersonX hardens pharaoh 's ___	xAttr	in control
+PersonX proposes another ___	oReact	none
+PersonX proposes another ___	xIntent	another draft the person
+PersonX proposes another ___	xReact	he like the person
+PersonX proposes another ___	oReact	collaborative
+PersonX proposes another ___	oReact	part of a team
+PersonX proposes another ___	oReact	supported
+PersonX proposes another ___	xIntent	to be helpful
+PersonX proposes another ___	xIntent	to collaborate
+PersonX proposes another ___	xReact	cooperative
+PersonX proposes another ___	xReact	helpful
+PersonX proposes another ___	xReact	successful
+PersonX proposes another ___	oEffect	none
+PersonX proposes another ___	xEffect	looks around to see how others respond.
+PersonX proposes another ___	xEffect	hesitates to sit down
+PersonX proposes another ___	oEffect	none
+PersonX proposes another ___	xEffect	talks
+PersonX proposes another ___	xEffect	has a new idea
+PersonX proposes another ___	oEffect	none
+PersonX proposes another ___	xEffect	none
+PersonX proposes another ___	oWant	none
+PersonX proposes another ___	xNeed	to not like what is in place
+PersonX proposes another ___	xNeed	to attend a meeting
+PersonX proposes another ___	xNeed	to be asked what they think
+PersonX proposes another ___	xWant	to make a presentation
+PersonX proposes another ___	xWant	to do more research about their proposal
+PersonX proposes another ___	xWant	to gather facts that will help

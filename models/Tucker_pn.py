@@ -40,6 +40,23 @@ class TuckER(torch.nn.Module):
 
         return pred
 
+    def evaluate_top(self, e1, r, e2):
+        x = self.bn0(e1)
+        x = self.input_dropout(x)
+        x = x.view(-1, 1, e1.size(1))
+
+        W_mat = torch.mm(r, self.W.view(r.size(1), -1))
+        W_mat = W_mat.view(-1, e1.size(1), e1.size(1))
+        W_mat = self.hidden_dropout1(W_mat)
+
+        x = torch.bmm(x, W_mat)
+        x = x.view(-1, e1.size(1))
+        x = self.bn1(x)
+        x = self.hidden_dropout2(x)
+        x_p = (x*e2).sum(dim=1)
+        pred_p = torch.sigmoid(x_p)
+        return pred_p
+
     def forward(self, e1, r, e2p, e2n):
         x = self.bn0(e1)
         x = self.input_dropout(x)

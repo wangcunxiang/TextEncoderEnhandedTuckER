@@ -37,7 +37,6 @@ class CNNTuckER(nn.Module):
         es_encoded = es_encoded.reshape(-1, es_encoded.size(1))
         return es_encoded
 
-
     def evaluate(self, e1, r):
 
         e1 = self.Eembed(e1)
@@ -53,6 +52,27 @@ class CNNTuckER(nn.Module):
         r_encoded = r_encoded.reshape(-1, r_encoded.size(1))
 
         return self.tucker.evaluate(e1_encoded, r_encoded, self.cal_es_emb())
+
+    def evaluate_top(self, e1, r, e2):
+        e1 = self.Eembed(e1)
+        r = self.Rembed(r)
+        e2 = self.Eembed(e2)
+
+        e1 = e1.permute(0, 2, 1)
+        r = r.permute(0, 2, 1)
+        e2 = e2.permute(0, 2, 1)
+        #print('e size = ' + str(e.size()))
+        e1_encoded = self.ecnn(e1)
+        r_encoded = self.rcnn(r)
+        e2_encoded = self.ecnn(e2)
+
+
+        e1_encoded = e1_encoded.reshape(-1, e1_encoded.size(1))
+        r_encoded = r_encoded.reshape(-1, r_encoded.size(1))
+        e2_encoded = e2_encoded.reshape(-1, e2_encoded.size(1))
+
+        return self.tucker.evaluate_top(e1_encoded, r_encoded, e2_encoded)
+
 
     def forward(self, e1, r, e2p, e2n):
         e1 = self.Eembed(e1)

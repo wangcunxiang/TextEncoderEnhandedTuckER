@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c6b834ed-a95c-4da2-aecf-0e906ed0e9d2" name="Default Changelist" comment="" />
+    <list default="true" id="c6b834ed-a95c-4da2-aecf-0e906ed0e9d2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Trial/test.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Trial/train.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Trial/valid.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Trial/valid_true.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/load_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_all.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_tucker_pn.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_tucker_pn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/CNN.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/CNN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/LSTM.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/LSTM.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Tucker_pn.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/Tucker_pn.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1VStjfWwGs0yq8z682si9WC9WcR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -36,5 +59,21 @@
       <updated>1577258460931</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

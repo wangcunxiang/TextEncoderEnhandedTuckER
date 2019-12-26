@@ -7,7 +7,6 @@ import random
 import numpy as np
 from torch.optim.lr_scheduler import ExponentialLR
 
-from models.Mean import MeanTuckER
 from models.CNN import CNNTuckER
 from models.LSTM import LSTMTuckER
 
@@ -94,7 +93,14 @@ class Experiment:
         #     negs = negs.cuda()
         return np.array(batch), negs
 
-    def get_batch_test(self, er_vocab, er_vocab_pairs, idx):
+    def get_batch_eval(self, er_vocab, e1_r):
+        e1 = e1_r[0]
+        r = e1_r[1]
+        batch = [[e1,r, e2] for e2 in er_vocab[e1_r]]
+
+        return np.array(batch)
+
+    def get_batch_dev(self, er_vocab, er_vocab_pairs, idx):
         batch = er_vocab_pairs[idx:idx + self.batch_size]
         targets = np.zeros((len(batch), len(d.entities)))
         for idx, pair in enumerate(batch):
@@ -104,17 +110,45 @@ class Experiment:
             targets = targets.cuda()
         return np.array(batch), targets
 
-    def get_batch(self, er_vocab, er_vocab_pairs, idx):
-        batch = er_vocab_pairs[idx:idx + self.batch_size]
-        targets = np.zeros((len(batch), len(d.entities)))
-        for idx, pair in enumerate(batch):
-            targets[idx, er_vocab[pair]] = 1.
-        targets = torch.FloatTensor(targets)
-        if self.cuda:
-            targets = targets.cuda()
-        return np.array(batch), targets
 
     def evaluate(self, model, data):
+        hits = []
+        ranks = []
+        for i in range(10):
+            hits.append([])
+
+        test_data_idxs = self.get_data_idxs(data)
+        er_vocab = self.get_er_vocab(self.get_data_idxs(d.data))# dict [(e1, r)]->[r2a, r2b, ...,]
+        test_er_vocab = self.get_er_vocab(self.get_data_idxs(data)) # dict [(e1, r)]->[r2a, r2b, ...,]
+        test_er_vocab_pairs = list(test_er_vocab.keys())  # list [...,(e1,r),...]
+
+        print("Number of test data points: %d" % len(test_data_idxs))
+        #print("test_er_vocab_pairs="+str(test_er_vocab_pairs))
+        for e1_r in test_er_vocab_pairs:
+
+            e1 = e1_r[0]
+            r = e1_r[1]
+            data_batch = np.array([[e1, r, e2] for e2 in er_vocab[e1_r]])
+            #print("data_batch="+str(data_batch))
+            #data_batch = self.get_batch_eval(test_er_vocab, e1_r)
+
+            e1_idx = torch.LongTensor(self.Etextdata[data_batch[:, 0]])
+            r_idx = torch.LongTensor(self.Rtextdata[data_batch[:, 1]])
+            e2_idx = torch.LongTensor(self.Etextdata[data_batch[:, 2]])
+            if self.cuda:
+                e1_idx = e1_idx.cuda()
+                r_idx = r_idx.cuda()
+                e2_idx = e2_idx.cuda()
+            predictions = model.evaluate_top(e1_idx, r_idx, e2_idx)
+            #print("predictions="+str(predictions))
+            top_values, top_idxs = torch.topk(predictions, k=1)
+
+            #print("top_idxs: "+str(top_idxs))
+            tail = er_vocab[e1_r][top_idxs.tolist()[0]]
+            print(d.entities[e1]+'\t'+d.relations[r]+'\t'+d.entities[tail])
+
+
+    def develop(self, model, data):
         hits = []
         ranks = []
         for i in range(10):
@@ -129,7 +163,7 @@ class Experiment:
         print("Number of test data points: %d" % len(test_data_idxs))
 
         for i in range(0, len(test_er_vocab_pairs), self.batch_size):
-            data_batch, targets = self.get_batch(er_vocab, test_er_vocab_pairs, i)
+            data_batch, targets = self.get_batch_dev(er_vocab, test_er_vocab_pairs, i)
 
             e1_idx = torch.LongTensor(self.Etextdata[data_batch[:, 0]])
             r_idx = torch.LongTensor(self.Rtextdata[data_batch[:, 1]])
@@ -162,13 +196,12 @@ class Experiment:
             loss = model.loss(predictions, targets)
             losses.append(loss.item())
 
-        print('Hits @10: {0}'.format(np.mean(hits[9]))
-        print('Hits @3: {0}'.format(np.mean(hits[2]))
-        print('Hits @1: {0}'.format(np.mean(hits[0]))
-        print('Mean rank: {0}'.format(np.mean(ranks))
-        print('Mean reciprocal rank: {0}'.format(np.mean(1. / np.array(ranks)))
+        print('Hits @10: {0}'.format(np.mean(hits[9])))
+        print('Hits @3: {0}'.format(np.mean(hits[2])))
+        print('Hits @1: {0}'.format(np.mean(hits[0])))
+        print('Mean rank: {0}'.format(np.mean(ranks)))
+        print('Mean reciprocal rank: {0}'.format(np.mean(1. / np.array(ranks))))
         print("loss="+str(np.mean(losses)))
-
 
     def train_and_eval(self):
         print("Training the {} model on {}...".format(args.model, args.dataset))
@@ -217,8 +250,7 @@ class Experiment:
                               Evocab=len(self.Evocab), Rvocab=len(self.Rvocab))
         elif args.model == 'LSTM':
             model = LSTMTuckER(d=d, es_idx=es_idx, ent_vec_dim=self.ent_vec_dim, rel_vec_dim=self.rel_vec_dim,
-                              cfg=cfg, max_length=self.maxlength,
-                               Evocab=len(self.Evocab), Rvocab=len(self.Rvocab))
+                              cfg=cfg, Evocab=len(self.Evocab), Rvocab=len(self.Rvocab))
         else:
             print("No Model")
             exit(0)
@@ -290,7 +322,7 @@ class Experiment:
             with torch.no_grad():
                 print("Valid:")
                 start_test = time.time()
-                self.evaluate(model, d.valid_data)
+                self.develop(model, d.valid_data)
                 print(time.time() - start_test)
                 print("Test:")
                 start_test = time.time()

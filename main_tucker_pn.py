@@ -58,7 +58,7 @@ class Experiment:
             negs = negs.cuda()
         return np.array(batch), negs
 
-    def evaluate(self, model, data):
+    def develop(self, model, data):
         hits = []
         ranks = []
         for i in range(10):
@@ -109,6 +109,7 @@ class Experiment:
         print('Mean rank: {0}'.format(np.mean(ranks)))
         print('Mean reciprocal rank: {0}'.format(np.mean(1. / np.array(ranks))))
         print('loss: {0}'.format(np.mean(losses)))
+
 
     def train_and_eval(self):
         print("Training the TuckER PN on {}...".format(args.dataset))

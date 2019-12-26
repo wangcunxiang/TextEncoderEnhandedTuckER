@@ -57,17 +57,6 @@ class DataText():
                 data += [[i[2], i[1]+"_reverse", i[0]] for i in data]
         return data
 
-    # def get_index(self, data, maxlength): #return [triples, sentences, ids],designed for  [triples, sentences, words]
-    #     textdata = []
-    #     for i in data:
-    #         for j in i:
-    #             while(len(j)<maxlength):
-    #                 j.append(0)
-    #             if(len(j)>maxlength):
-    #                 raise ("sentence length error")
-    #             textdata.append(j)
-    #     return textdata
-
     def get_index(self, data, maxlength):#return [sentences, ids],designed for  [sentences, words];
     # it is padding operation
         textdata = []
