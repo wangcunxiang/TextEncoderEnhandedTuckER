@@ -12,6 +12,12 @@ from models.LSTM import LSTMTuckER
 
 from config.config import config
 
+hit10 = 0
+hit3 = 0
+hit1 = 0
+MR = 15000
+MRR = 0
+
 
 class Experiment:
 
@@ -111,7 +117,7 @@ class Experiment:
         return np.array(batch), targets
 
 
-    def evaluate(self, model, data):
+    def evaluate(self, model, data, fw):
         hits = []
         ranks = []
         for i in range(10):
@@ -145,10 +151,21 @@ class Experiment:
 
             #print("top_idxs: "+str(top_idxs))
             tail = er_vocab[e1_r][top_idxs.tolist()[0]]
-            print(d.entities[e1]+'\t'+d.relations[r]+'\t'+d.entities[tail])
+            fw.write(d.entities[e1])
+            fw.write('\t')
+            fw.write(d.relations[r])
+            fw.write('\t')
+            fw.write(d.entities[tail])
+            fw.write('\n')
 
 
     def develop(self, model, data):
+        global hit10
+        global hit3
+        global hit1
+        global MR
+        global MRR
+
         hits = []
         ranks = []
         for i in range(10):
@@ -197,10 +214,70 @@ class Experiment:
             losses.append(loss.item())
 
         print('Hits @10: {0}'.format(np.mean(hits[9])))
+        if np.mean(hits[9]) > hit10:
+            state = {
+                'state': model.state_dict(),
+                'Hits@10': np.mean(hits[9]),
+                'Hits@3': np.mean(hits[2]),
+                'Hits@1': np.mean(hits[0]),
+                'MR': np.mean(ranks),
+                'MRR': np.mean(1. / np.array(ranks)),
+                'loss': np.mean(losses)
+            }
+            torch.save(state, './checkpoint/hits10/modelpara.pkl')
+            hit10 = np.mean(hits[9])
         print('Hits @3: {0}'.format(np.mean(hits[2])))
+        if np.mean(hits[2]) > hit3:
+            state = {
+                'state': model.state_dict(),
+                'Hits@10': np.mean(hits[9]),
+                'Hits@3': np.mean(hits[2]),
+                'Hits@1': np.mean(hits[0]),
+                'MR': np.mean(ranks),
+                'MRR': np.mean(1. / np.array(ranks)),
+                'loss': np.mean(losses)
+            }
+            torch.save(state, './checkpoint/hits3/modelpara.pkl')
+            hit3 = np.mean(hits[2])
         print('Hits @1: {0}'.format(np.mean(hits[0])))
+        if np.mean(hits[0]) > hit1:
+            state = {
+                'state': model.state_dict(),
+                'Hits@10': np.mean(hits[9]),
+                'Hits@3': np.mean(hits[2]),
+                'Hits@1': np.mean(hits[0]),
+                'MR': np.mean(ranks),
+                'MRR': np.mean(1. / np.array(ranks)),
+                'loss': np.mean(losses)
+            }
+            torch.save(state, './checkpoint/hits1/modelpara.pkl')
+            hit1 = np.mean(hits[0])
         print('Mean rank: {0}'.format(np.mean(ranks)))
+        if np.mean(ranks) < MR:
+            state = {
+                'state': model.state_dict(),
+                'Hits@10': np.mean(hits[9]),
+                'Hits@3': np.mean(hits[2]),
+                'Hits@1': np.mean(hits[0]),
+                'MR': np.mean(ranks),
+                'MRR': np.mean(1. / np.array(ranks)),
+                'loss': np.mean(losses)
+            }
+            torch.save(state, './checkpoint/mr/modelpara.pkl')
+            MR = np.mean(ranks)
         print('Mean reciprocal rank: {0}'.format(np.mean(1. / np.array(ranks))))
+        if np.mean(1. / np.array(ranks)) > MRR:
+            state = {
+                'state': model.state_dict(),
+                'Hits@10': np.mean(hits[9]),
+                'Hits@3': np.mean(hits[2]),
+                'Hits@1': np.mean(hits[0]),
+                'MR': np.mean(ranks),
+                'MRR': np.mean(1. / np.array(ranks)),
+                'loss': np.mean(losses)
+            }
+            torch.save(state, './checkpoint/mrr/modelpara.pkl')
+            MRR = np.mean(1. / np.array(ranks))
         print("loss="+str(np.mean(losses)))
 
     def train_and_eval(self):
@@ -324,10 +401,21 @@ class Experiment:
                 start_test = time.time()
                 self.develop(model, d.valid_data)
                 print(time.time() - start_test)
-                print("Test:")
-                start_test = time.time()
-                self.evaluate(model, d.test_data)
-                print(time.time() - start_test)
+
+        print("Test:")
+        for i in ["hits10", "hits3", "hits1", "mr", "mrr"]:
+            start_test = time.time()
+            checkpoint = torch.load("./checkpoint/{}/modelpara.pkl".format(i))
+            model.load_state_dict(checkpoint['state'])
+            print('Hits @10: {0}'.format(checkpoint['Hits@10']))
+            print('Hits @3: {0}'.format(checkpoint['Hits@3']))
+            print('Hits @1: {0}'.format(checkpoint['Hits@1']))
+            print('MR: {0}'.format(checkpoint['MR']))
+            print('MRR: {0}'.format(checkpoint['MRR']))
+            path = 'checkpoint/' + i + '/results.txt'
+            fw = open(path, 'w', encoding='utf-8')
+            self.evaluate(model, d.test_data, fw)
+            print(time.time() - start_test)
 
 
 if __name__ == '__main__':
@@ -373,5 +461,3 @@ if __name__ == '__main__':
                             label_smoothing=args.label_smoothing, maxlength=args.max_length
                             )
     experiment.train_and_eval()
-
-
