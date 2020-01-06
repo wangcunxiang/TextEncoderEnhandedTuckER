@@ -37,7 +37,11 @@ class Experiment:
         self.Rtextdata = None
         self.Evocab = ['NULL', ]  # padding_idx=0
         self.Rvocab = ['NULL', ]  # padding_idx=0
-
+        self.max_test_hit1 = 0.
+        self.max_test_hit3 = 0.
+        self.max_test_hit10 = 0.
+        self.max_test_MR = 999999999.
+        self.max_test_MRR = 0.
 
 
     def get_vocab_emb(self, vocab, hSize, data_dir="embedding/", data_type="word_embs.txt"):
@@ -213,7 +217,13 @@ class Experiment:
             loss = model.loss(predictions, targets)
             losses.append(loss.item())
 
-        print('Hits @10: {0}'.format(np.mean(hits[9])))
+        self.max_test_hit1 = max(self.max_test_hit1, float(np.mean(hits[0])))
+        self.max_test_hit3 = max(self.max_test_hit3, float(np.mean(hits[2])))
+        self.max_test_hit10 = max(self.max_test_hit10, float(np.mean(hits[9])))
+        self.max_test_MR = min(self.max_test_MR, float(np.mean(ranks)))
+        self.max_test_MRR= max(self.max_test_MRR, float(np.mean(1. / np.array(ranks))))
+
+        print('Hits @10: {0}-{1}'.format(np.mean(hits[9]), self.max_test_hit10))
         if np.mean(hits[9]) > hit10:
             state = {
                 'state': model.state_dict(),
@@ -226,7 +236,7 @@ class Experiment:
             }
             torch.save(state, './checkpoint/hits10/modelpara.pkl')
             hit10 = np.mean(hits[9])
-        print('Hits @3: {0}'.format(np.mean(hits[2])))
+        print('Hits @3: {0}-{1}'.format(np.mean(hits[2]), self.max_test_hit3))
         if np.mean(hits[2]) > hit3:
             state = {
                 'state': model.state_dict(),
@@ -239,7 +249,7 @@ class Experiment:
             }
             torch.save(state, './checkpoint/hits3/modelpara.pkl')
             hit3 = np.mean(hits[2])
-        print('Hits @1: {0}'.format(np.mean(hits[0])))
+        print('Hits @1: {0}-{1}'.format(np.mean(hits[0]), self.max_test_hit1))
         if np.mean(hits[0]) > hit1:
             state = {
                 'state': model.state_dict(),
@@ -252,7 +262,7 @@ class Experiment:
             }
             torch.save(state, './checkpoint/hits1/modelpara.pkl')
             hit1 = np.mean(hits[0])
-        print('Mean rank: {0}'.format(np.mean(ranks)))
+        print('Mean rank: {0}-{1}'.format(np.mean(ranks), self.max_test_MR))
         if np.mean(ranks) < MR:
             state = {
                 'state': model.state_dict(),
@@ -265,7 +275,7 @@ class Experiment:
             }
             torch.save(state, './checkpoint/mr/modelpara.pkl')
             MR = np.mean(ranks)
-        print('Mean reciprocal rank: {0}'.format(np.mean(1. / np.array(ranks))))
+        print('Mean reciprocal rank: {0}-{1}'.format(np.mean(1. / np.array(ranks)), self.max_test_MRR))
         if np.mean(1. / np.array(ranks)) > MRR:
             state = {
                 'state': model.state_dict(),
@@ -278,6 +288,10 @@ class Experiment:
             }
             torch.save(state, './checkpoint/mrr/modelpara.pkl')
             MRR = np.mean(1. / np.array(ranks))
+
+
+
+
         print("loss="+str(np.mean(losses)))
 
     def train_and_eval(self):

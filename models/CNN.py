@@ -97,6 +97,3 @@ class CNNTuckER(nn.Module):
 
 
         return self.tucker(e1_encoded, r_encoded, e2p_encoded, e2n_encoded)
-
-
-
