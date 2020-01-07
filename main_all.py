@@ -87,10 +87,12 @@ class Experiment:
         return data_idxs
 
     def get_er_vocab(self, data):
-        er_vocab = defaultdict(list)
+        er_vocab = defaultdict(set)
         for triple in data:
-            er_vocab[(triple[0], triple[1])].append(triple[2])
+            er_vocab[(triple[0], triple[1])].add(triple[2])
+        er_vocab = {i : list(er_vocab[i]) for i in er_vocab}
         return er_vocab
+
 
     def get_batch_train(self, er_vocab, er_vocab_pairs, idx):
         batch = er_vocab_pairs[idx:idx + self.batch_size]

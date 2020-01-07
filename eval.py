@@ -90,7 +90,7 @@ class Experiment:
         er_vocab = defaultdict(set)
         for triple in data:
             er_vocab[(triple[0], triple[1])].add(triple[2])
-        er_vocab = {i : [j for j in er_vocab[i]] for i in er_vocab}
+        er_vocab = {i : list(er_vocab[i]) for i in er_vocab}
         return er_vocab
 
     def get_batch_train(self, er_vocab, er_vocab_pairs, idx):
