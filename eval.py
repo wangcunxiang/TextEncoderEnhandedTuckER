@@ -152,20 +152,21 @@ class Experiment:
                 e2_idx = e2_idx.cuda()
             predictions = model.evaluate_top(e1_idx, r_idx, e2_idx)
             #print("predictions="+str(predictions))
-            top_values, top_idxs = torch.topk(predictions, k=1)
+            sort_values, sort_idxs = torch.sort(predictions, descending=True)
 
-            #print("top_idxs: "+str(top_idxs))
-            tail = er_vocab[e1_r][top_idxs.tolist()[0]]
-            fw.write(d.entities[e1])
-            fw.write('\t')
-            fw.write(d.relations[r])
-            fw.write('\t')
-            fw.write(d.entities[tail])
-            fw.write('\n')
-
+            sort_idxs = sort_idxs.tolist()
+            # print("top_idxs: "+str(top_idxs))
+            for i in sort_idxs:
+                tail = er_vocab[e1_r][i]
+                fw.write(d.entities[e1])
+                fw.write('\t')
+                fw.write(d.relations[r])
+                fw.write('\t')
+                fw.write(d.entities[tail])
+                fw.write('\n')
 
     def train_and_eval(self):
-        print("Training the {} model on {}...".format(args.model, args.dataset))
+        print("Evaluating the {} model on {}...".format(args.model, args.dataset))
         self.entity_idxs = {d.entities[i]: i for i in range(len(d.entities))}
         self.relation_idxs = {d.relations[i]: i for i in range(len(d.relations))}
 
@@ -227,6 +228,7 @@ class Experiment:
         print("Test:")
         for i in ["hits10", "hits3", "hits1", "mr", "mrr"]:
             start_test = time.time()
+            print(i)
             checkpoint = torch.load(args.outdir+"/modelpara_{}.pkl".format(i))
             model.load_state_dict(checkpoint['state'])
             print('Hits @10: {0}'.format(checkpoint['Hits@10']))

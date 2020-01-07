@@ -152,16 +152,18 @@ class Experiment:
                 e2_idx = e2_idx.cuda()
             predictions = model.evaluate_top(e1_idx, r_idx, e2_idx)
             #print("predictions="+str(predictions))
-            top_values, top_idxs = torch.topk(predictions, k=1)
+            sort_values, sort_idxs = torch.sort(predictions, descending=True)
 
+            sort_idxs = sort_idxs.tolist()
             #print("top_idxs: "+str(top_idxs))
-            tail = er_vocab[e1_r][top_idxs.tolist()[0]]
-            fw.write(d.entities[e1])
-            fw.write('\t')
-            fw.write(d.relations[r])
-            fw.write('\t')
-            fw.write(d.entities[tail])
-            fw.write('\n')
+            for i in sort_idxs:
+                tail = er_vocab[e1_r][i]
+                fw.write(d.entities[e1])
+                fw.write('\t')
+                fw.write(d.relations[r])
+                fw.write('\t')
+                fw.write(d.entities[tail])
+                fw.write('\n')
 
 
     def develop(self, model, data):
