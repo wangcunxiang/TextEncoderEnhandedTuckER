@@ -6,6 +6,7 @@ import torch.tensor
 import random
 import numpy as np
 from torch.optim.lr_scheduler import ExponentialLR
+import os
 
 from models.CNN import CNNTuckER
 from models.LSTM import LSTMTuckER
@@ -234,8 +235,8 @@ class Experiment:
                 'MRR': np.mean(1. / np.array(ranks)),
                 'loss': np.mean(losses)
             }
-            torch.save(state, './checkpoint/hits10/modelpara.pkl')
-            hit10 = np.mean(hits[9])
+            torch.save(state, args.outdir+'/modelpara_hits10.pkl')
+
         print('Hits @3: {0}-{1}'.format(np.mean(hits[2]), self.max_test_hit3))
         if np.mean(hits[2]) > hit3:
             state = {
@@ -247,8 +248,8 @@ class Experiment:
                 'MRR': np.mean(1. / np.array(ranks)),
                 'loss': np.mean(losses)
             }
-            torch.save(state, './checkpoint/hits3/modelpara.pkl')
-            hit3 = np.mean(hits[2])
+            torch.save(state, args.outdir+'/modelpara_hits3.pkl')
+
         print('Hits @1: {0}-{1}'.format(np.mean(hits[0]), self.max_test_hit1))
         if np.mean(hits[0]) > hit1:
             state = {
@@ -260,8 +261,8 @@ class Experiment:
                 'MRR': np.mean(1. / np.array(ranks)),
                 'loss': np.mean(losses)
             }
-            torch.save(state, './checkpoint/hits1/modelpara.pkl')
-            hit1 = np.mean(hits[0])
+            torch.save(state, args.outdir+'/modelpara_hits1.pkl')
+
         print('Mean rank: {0}-{1}'.format(np.mean(ranks), self.max_test_MR))
         if np.mean(ranks) < MR:
             state = {
@@ -273,8 +274,8 @@ class Experiment:
                 'MRR': np.mean(1. / np.array(ranks)),
                 'loss': np.mean(losses)
             }
-            torch.save(state, './checkpoint/mr/modelpara.pkl')
-            MR = np.mean(ranks)
+            torch.save(state, args.outdir+'/modelpara_mr.pkl')
+
         print('Mean reciprocal rank: {0}-{1}'.format(np.mean(1. / np.array(ranks)), self.max_test_MRR))
         if np.mean(1. / np.array(ranks)) > MRR:
             state = {
@@ -286,9 +287,7 @@ class Experiment:
                 'MRR': np.mean(1. / np.array(ranks)),
                 'loss': np.mean(losses)
             }
-            torch.save(state, './checkpoint/mrr/modelpara.pkl')
-            MRR = np.mean(1. / np.array(ranks))
-
+            torch.save(state, args.outdir+'/modelpara_mrr.pkl')
 
 
 
@@ -419,7 +418,7 @@ class Experiment:
         print("Test:")
         for i in ["hits10", "hits3", "hits1", "mr", "mrr"]:
             start_test = time.time()
-            checkpoint = torch.load("./checkpoint/{}/modelpara.pkl".format(i))
+            checkpoint = torch.load(args.outdir+"/modelpara_{}.pkl".format(i))
             model.load_state_dict(checkpoint['state'])
             print('Hits @10: {0}'.format(checkpoint['Hits@10']))
             print('Hits @3: {0}'.format(checkpoint['Hits@3']))
@@ -442,6 +441,8 @@ if __name__ == '__main__':
                         help="Whether to use pretrained embeddings")
     parser.add_argument("--config", type=str, default="config/config.json", nargs="?",
                         help="the config file path")
+    parser.add_argument("--outdir", type=str, default="./outdir/model", nargs="?",
+                        help="the model save file path")
     parser.add_argument("--num_iterations", type=int, default=500, nargs="?",
                         help="Number of iterations.")
     parser.add_argument("--batch_size", type=int, default=128, nargs="?",
@@ -462,6 +463,8 @@ if __name__ == '__main__':
                         help="max sequence length.")
     args = parser.parse_args()
     print(args)
+    if not os.path.exists(args.outdir):
+        os.makedirs(args.outdir)
     dataset = args.dataset
     data_dir = "data/%s/" % dataset
     torch.backends.cudnn.deterministic = True
