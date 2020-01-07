@@ -234,7 +234,7 @@ class Experiment:
             print('Hits @1: {0}'.format(checkpoint['Hits@1']))
             print('MR: {0}'.format(checkpoint['MR']))
             print('MRR: {0}'.format(checkpoint['MRR']))
-            path = 'checkpoint/' + i + '/results.txt'
+            path = args.outdir+'/results_'+i+'.txt'
             fw = open(path, 'w', encoding='utf-8')
             self.evaluate(model, d.test_data, fw)
             print(time.time() - start_test)
