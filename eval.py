@@ -6,6 +6,7 @@ import torch.tensor
 import random
 import numpy as np
 from torch.optim.lr_scheduler import ExponentialLR
+import os
 
 from models.CNN import CNNTuckER
 from models.LSTM import LSTMTuckER
@@ -37,7 +38,11 @@ class Experiment:
         self.Rtextdata = None
         self.Evocab = ['NULL', ]  # padding_idx=0
         self.Rvocab = ['NULL', ]  # padding_idx=0
-
+        self.max_test_hit1 = 0.
+        self.max_test_hit3 = 0.
+        self.max_test_hit10 = 0.
+        self.max_test_MR = 999999999.
+        self.max_test_MRR = 0.
 
 
     def get_vocab_emb(self, vocab, hSize, data_dir="embedding/", data_type="word_embs.txt"):
@@ -219,20 +224,10 @@ class Experiment:
         ########
         if self.cuda:
             model.cuda()
-        #model.init()
-        opt = torch.optim.Adam(model.parameters(), lr=self.learning_rate)
-        if self.decay_rate:
-            scheduler = ExponentialLR(opt, self.decay_rate)
-
-        er_vocab = self.get_er_vocab(train_data_idxs)  # dict (e1,r)->e2
-        er_vocab_pairs = list(er_vocab.keys())  # list [...,(e1,r),...]
-
-        model.eval()
-
         print("Test:")
         for i in ["hits10", "hits3", "hits1", "mr", "mrr"]:
             start_test = time.time()
-            checkpoint = torch.load("./checkpoint/{}/modelpara.pkl".format(i))
+            checkpoint = torch.load(args.outdir+"/modelpara_{}.pkl".format(i))
             model.load_state_dict(checkpoint['state'])
             print('Hits @10: {0}'.format(checkpoint['Hits@10']))
             print('Hits @3: {0}'.format(checkpoint['Hits@3']))
@@ -255,6 +250,8 @@ if __name__ == '__main__':
                         help="Whether to use pretrained embeddings")
     parser.add_argument("--config", type=str, default="config/config.json", nargs="?",
                         help="the config file path")
+    parser.add_argument("--outdir", type=str, default="./outdir/model", nargs="?",
+                        help="the model save file path")
     parser.add_argument("--num_iterations", type=int, default=500, nargs="?",
                         help="Number of iterations.")
     parser.add_argument("--batch_size", type=int, default=128, nargs="?",
@@ -274,6 +271,9 @@ if __name__ == '__main__':
     parser.add_argument("--max_length", type=int, default=5, nargs="?",
                         help="max sequence length.")
     args = parser.parse_args()
+    print(args)
+    if not os.path.exists(args.outdir):
+        os.makedirs(args.outdir)
     dataset = args.dataset
     data_dir = "data/%s/" % dataset
     torch.backends.cudnn.deterministic = True
