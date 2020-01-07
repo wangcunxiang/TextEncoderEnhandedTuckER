@@ -461,6 +461,7 @@ if __name__ == '__main__':
     parser.add_argument("--max_length", type=int, default=5, nargs="?",
                         help="max sequence length.")
     args = parser.parse_args()
+    print(args)
     dataset = args.dataset
     data_dir = "data/%s/" % dataset
     torch.backends.cudnn.deterministic = True
